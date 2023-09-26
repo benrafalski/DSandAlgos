@@ -362,3 +362,33 @@ public:
     }
 };
 ```
+
+
+## pass
+
+
+## Container With Most Water
+You are given an integer array height of length n. There are n vertical lines drawn such that the two endpoints of the ith line are (i, 0) and (i, height[i]).
+
+Find two lines that together with the x-axis form a container, such that the container contains the most water.
+
+Return the maximum amount of water a container can store.
+
+```c++
+class Solution {
+public:
+    int maxArea(vector<int>& height) {
+        int max = -1;
+        int l = 0;
+        int r = height.size()-1;
+        while(l<r){
+            int check = min(height[l],height[r])*(r-l);
+            if(check>max) max=check;
+            if(height[l]>=height[r]) r--;
+            else l++;
+        }
+
+        return max;
+    }
+};
+```

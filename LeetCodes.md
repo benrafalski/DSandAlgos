@@ -392,3 +392,69 @@ public:
     }
 };
 ```
+
+## 42. Trapping Rain Water
+```c++
+class Solution {
+public:
+    int trap(vector<int>& height) {
+        int i=0;
+        int j=i+1;
+
+        int ans=0;
+
+        while(j<height.size()){
+            if(height[i]<=height[j]){
+                if(j-i==1){
+                    i=j;
+                    j=i+1;
+                }else{
+                    // find area
+                    int h = min(height[i], height[j]);
+                    int w = j - i - 1;
+                    int area = h*w;
+                    int k = i+1;
+                    while(k<j){
+                        area -= height[k];
+                        k++;
+                    }
+                    ans+=area;
+                    i=j;
+                    j=i+1;
+                }
+            }else{
+                j++;
+            }
+        }
+
+        reverse(height.begin(), height.end());
+        i=0;        
+        j=i+1;
+
+        while(j<height.size()){
+            if(height[i]<height[j]){
+                if(j-i==1){
+                    i=j;
+                    j=i+1;
+                }else{
+                    // find area
+                    int h = min(height[i], height[j]);
+                    int w = j - i - 1;
+                    int area = h*w;
+                    int k = i+1;
+                    while(k<j){
+                        area -= height[k];
+                        k++;
+                    }
+                    ans+=area;
+                    i=j;
+                    j=i+1;
+                }
+            }else{
+                j++;
+            }
+        }
+        return ans;
+    }
+};
+```

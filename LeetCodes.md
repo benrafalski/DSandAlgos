@@ -492,3 +492,127 @@ public:
     }
 };
 ```
+
+
+## Min Stack
+Design a stack that supports push, pop, top, and retrieving the minimum element in constant time.
+
+Implement the MinStack class:
+
+MinStack() initializes the stack object.
+- void push(int val) pushes the element val onto the stack.
+- void pop() removes the element on the top of the stack.
+- int top() gets the top element of the stack.
+- int getMin() retrieves the minimum element in the stack.
+
+You must implement a solution with O(1) time complexity for each function.
+```c++
+class MinStack {
+public:
+    stack<int> stk;
+    stack<int> minstack;
+    MinStack() {
+
+    }
+    
+    void push(int val) {
+        if(stk.empty()) minstack.push(min(INT_MAX, val));
+        else minstack.push(min(minstack.top(), val));
+        stk.push(val); 
+    }
+    
+    void pop() {
+        minstack.pop();
+        stk.pop();
+    }
+    
+    int top() {
+       return stk.top(); 
+    }
+    
+    int getMin() {
+        return minstack.top();
+    }
+
+};
+```
+
+## Evaluate Reverse Polish Notation
+You are given an array of strings tokens that represents an arithmetic expression in a Reverse Polish Notation.
+
+Evaluate the expression. Return an integer that represents the value of the expression.
+
+Note that:
+
+- The valid operators are '+', '-', '*', and '/'.
+- Each operand may be an integer or another expression.
+- The division between two integers always truncates toward zero.
+- There will not be any division by zero.
+- The input represents a valid arithmetic expression in a reverse polish notation.
+- The answer and all the intermediate calculations can be represented in a 32-bit integer.
+
+```c++
+class Solution {
+public:
+    int evalRPN(vector<string>& tokens) {
+        stack<int> nums;
+        int i = 0;
+        for(string t : tokens){
+            if(isdigit(t[0]) || t.size() > 1){
+                nums.push(stoi(t));
+            }else{
+                int a = nums.top();
+                nums.pop();
+                int b = nums.top();
+                nums.pop();
+                if(t[0] == '+') nums.push(a+b); 
+                if(t[0] == '-') nums.push(b-a);
+                if(t[0] == '*') nums.push(a*b);
+                if(t[0] == '/') nums.push(b/a);
+            }
+        }
+        return nums.top();
+    }
+};
+```
+
+
+## Generate Parentheses
+Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.
+```c++
+class Solution {
+public:
+    stack<char> stk;
+    vector<string> ans;
+
+    vector<string> generateParenthesis(int n) {
+        paren(0,0,n);
+        return ans;
+    }   
+
+    void paren(int open, int closed, int n){
+        if(open == closed && open == n){
+            string a = "";
+            stack<char> stk2 = stk;
+            while(!stk2.empty()) {
+                a += stk2.top();
+                stk2.pop();
+            }
+            ans.push_back(a);
+            return;
+        }
+        if(open < n){
+            stk.push(')');
+            paren(open+1, closed, n);
+            stk.pop();
+        }
+        if(closed < open){
+            stk.push('(');
+            paren(open, closed+1, n);
+            stk.pop();
+        }
+    }
+};
+```
+
+
